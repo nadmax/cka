@@ -19,11 +19,11 @@ Feel free to add uncovered topics for the CKA.
 
 **Key documentation sections to know:**
 
-- `kubectl` Cheat Sheet: `/docs/reference/kubectl/cheatsheet/`
-- Pod spec examples: `/docs/concepts/workloads/pods/`
-- NetworkPolicy examples: `/docs/concepts/services-networking/network-policies/`
-- RBAC examples: `/docs/reference/access-authn-authz/rbac/`
-- Storage examples: `/docs/concepts/storage/`
+- [`kubectl` Cheat Sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet)
+- [Pod spec examples](https://kubernetes.io/docs/concepts/workloads/pods)
+- [NetworkPolicy examples](https://kubernetes.io/docs/concepts/services-networking/network-policies)
+- [RBAC examples](https://kubernetes.io/docs/reference/access-authn-authz/rbac)
+- [Storage examples](https://kubernetes.io/docs/concepts/storage)
 
 ## Environment Setup
 
