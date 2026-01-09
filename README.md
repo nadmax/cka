@@ -27,12 +27,13 @@ Feel free to add uncovered topics for the CKA.
 
 ## Environment Setup
 
-### Alias
+### Shortcuts
 
-Since the exam takes 2 hours, I recommend only using the following alias.
+Since the exam takes 2 hours, I recommend only using the following shortcuts.
 
 ```sh
 controlplane:~$ alias k=kubectl
+controlplane:~$ export do="--dry-run=client -o yaml" # Variable for generating YAML without creating resources
 ```
 
 ### Vim (Optional)
