@@ -164,7 +164,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  ingressClassName: nginx
+  ingressClassName: nginx # Uses nginx implementation
   rules:
   - host: "<hostname>"
     http:
@@ -176,6 +176,40 @@ spec:
             name: <service-name>
             port:
               number: <port>
+```
+
+## Gateway and HTTPRoute
+
+```yml
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: <gateway-name>
+  namespace: <name>
+spec:
+  gatewayClassName: nginx # Uses nginx implementation
+  listeners:
+  - protocol: HTTP
+    port: 80
+    name: <name>
+```
+
+```yml
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: web-route
+spec:
+  parentRefs:
+  - name: my-gateway
+  rules:
+  - matches:
+    - path: # Uses a path-based routing
+        type: PathPrefix
+        value: /
+    backendRefs: # References web service
+    - name: web
+      port: 80
 ```
 
 ## Resource Management
