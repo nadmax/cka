@@ -690,3 +690,110 @@ controlplane:~$ k cordon <node-name> # Mark node as unschedulable
 controlplane:~$ k drain <node-name> --ignore-daemonsets # Evict all pods currently running on node (without --ignore-daemonsets, an error occurred)
 controlplane:~$ k uncordon <node-name> # Enable scheduling
 ```
+
+## Taints and Toleration
+
+```sh
+controlplane:~$ k taint nodes <node-name> key1=value1:NoSchedule
+```
+
+This means that no pod will be able to schedule onto the node unless it has a matching toleration.
+
+```sh
+controlplane:~$ k taint no <node-name> key1=value1:NoSchedule- # untaint node
+```
+
+Toleration on a pod:
+
+```yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: <pod-name>
+spec:
+  tolerations:
+  - key: "key1"
+    operator: "Exists"
+    effect: "NoSchedule"
+  containers:
+  - image: <image-name>
+    name: <container-name>
+  nodeSelector:
+    kubernetes.io/hostname: <node-name>
+```
+
+## PV and PVC
+
+```yml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: <pv-name>
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "local-path"
+  persistentVolumeReclaimPolicy: Delete # Can be Recycle or Retain too
+  hostPath:
+    path: "<path>"
+```
+
+```yml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: <pvc-name>
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  accessModes:
+    - ReadWriteOnce 
+  storageClassName: "local-path"
+  volumeName: <pv-name>
+```
+
+So the pod can look like this
+
+```yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: <pod-name>
+spec:
+  containers:
+    - name: <container-name>
+      image: <image-name>
+      volumeMounts:
+        - mountPath: "<path>"
+          name: <volume-name>
+  volumes:
+    - name: <volume-name>
+      persistentVolumeClaim:
+        claimName: <pvc-name>
+```
+
+### NFS Volume
+
+```yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: <pod-name>
+spec:
+  containers:
+    - name: <container-name>
+      image: <image-name>
+      command: [ 'sh', '-c', 'while true; do echo "some text" >> /data/test; sleep 3600; done' ]
+      volumeMounts:
+        - name: <volume-name>
+          mountPath: <path>
+  volumes:
+    - name: <volume-name>
+      nfs:
+        server: <ip-address>
+        path: <path>
+        readOnly: no
+```
