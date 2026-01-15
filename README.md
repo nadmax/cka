@@ -415,6 +415,19 @@ controlplane:~$ k exec <pod-name> -- cat <mount-path>/<key-name>
 controlplane:~$ k create secret <secret-type> <name> --from-literal=<ENV>=<VALUE>
 ```
 
+#### Service Account Token
+
+```yml
+apiVersion: v1
+kind: Secret
+metadata:
+    name: <secret-name>
+    namespace: <namespace-name>
+    annotations:
+        kubernetes.io/service-account.name: "<sa-name>"
+type: kubernetes.io/service-account-token
+```
+
 ---
 
 ## 7. Networking
