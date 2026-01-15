@@ -605,6 +605,17 @@ controlplane:~$ k auth can-i <verb> <resource> \
 
 ## 9. Storage
 
+### StorageClass
+
+```yml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+    name: <storage-class-name>
+provisioner: <provisioner-name>
+reclaimPolicy: Retain
+```
+
 ### PV and PVC
 
 ```yml
